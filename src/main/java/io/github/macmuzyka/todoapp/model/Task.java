@@ -1,6 +1,7 @@
 package io.github.macmuzyka.todoapp.model;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 
 /**
  * Created by Raweshau
@@ -12,6 +13,7 @@ public class Task {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+    @NotBlank(message = "Task's description must not be empty")
     private String description;
     private boolean done;
 
