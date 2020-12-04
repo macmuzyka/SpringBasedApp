@@ -13,7 +13,7 @@ public class Task {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    @NotBlank(message = "Task's description must not be empty")
+    @NotBlank(message = "Task's description MUST NOT be empty")
     private String description;
     private boolean done;
 
@@ -24,7 +24,7 @@ public class Task {
         return id;
     }
 
-    void setId(int id) {
+    public void setId(int id) {
         this.id = id;
     }
 
