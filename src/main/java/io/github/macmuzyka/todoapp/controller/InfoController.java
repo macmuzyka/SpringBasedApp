@@ -1,6 +1,7 @@
 package io.github.macmuzyka.todoapp.controller;
 
-import org.springframework.beans.factory.annotation.Value;
+import io.github.macmuzyka.todoapp.TaskConfigurationProperties;
+import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -11,17 +12,23 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 class InfoController {
 
-    @Value("${spring.datasource.url}")
-    private String url;
-    @Value("${my.prop}")
-    private String myProp;
+    //    @Autowired
+    private DataSourceProperties dataSource;
+    //    @Value("${task.allowMultipleTasksFrmTemplate}")
+    private TaskConfigurationProperties myProp;
+
+    InfoController(final DataSourceProperties dataSource, final TaskConfigurationProperties myProp) {
+        this.dataSource = dataSource;
+        this.myProp = myProp;
+    }
 
     @GetMapping("/info/url")
-    String url(){
-        return url;
+    String url() {
+        return dataSource.getUrl();
     }
+
     @GetMapping("/info/prop")
-    String myProp() {
-        return myProp;
+    boolean myProp() {
+        return myProp.getTemplate().isAllowMultipleTasks();
     }
 }
