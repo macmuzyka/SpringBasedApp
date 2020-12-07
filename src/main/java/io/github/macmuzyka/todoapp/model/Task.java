@@ -7,6 +7,7 @@ import javax.validation.constraints.NotBlank;
  * Created by Raweshau
  * on 27.11.2020
  */
+
 @Entity
 @Table(name = "tasks")
 public class Task {
