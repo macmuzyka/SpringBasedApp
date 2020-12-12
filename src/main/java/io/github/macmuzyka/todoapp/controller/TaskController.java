@@ -8,6 +8,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.transaction.Transactional;
 import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
@@ -37,13 +38,25 @@ class TaskController {
         return ResponseEntity.ok(repository.findAll(page).getContent());
     }
 
+    @Transactional
     @PutMapping("/tasks/{id}")
-    ResponseEntity<?> updateTask(@PathVariable int id, @RequestBody @Valid Task toUpdate) {
+    public ResponseEntity<?> updateTask(@PathVariable int id, @RequestBody @Valid Task toUpdate) {
         if (!repository.existsById(id)) {
             return ResponseEntity.notFound().build();
         }
-        toUpdate.setId(id);
-        repository.save(toUpdate);
+        repository.findById(id)
+                .ifPresent(task -> task.updateFrom(toUpdate));
+        return ResponseEntity.noContent().build();
+    }
+
+    @Transactional
+    @PatchMapping("/tasks/{id}")
+    public ResponseEntity<?> toggleTask(@PathVariable int id) {
+        if (!repository.existsById(id)) {
+            return ResponseEntity.notFound().build();
+        }
+        repository.findById(id)
+                .ifPresent(task -> task.setDone(!task.isDone()));
         return ResponseEntity.noContent().build();
     }
 
@@ -51,7 +64,7 @@ class TaskController {
     @GetMapping("/tasks/{id}")
     ResponseEntity<Task> getTask(@PathVariable int id) {
         return repository.findById(id)
-                .map(task -> ResponseEntity.ok(task))
+                .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
 
@@ -91,3 +104,19 @@ class TaskController {
 //    }
 //     Pre 4.3 Spring mapping annotation <----------------
 //     @RequestMapping(method = RequestMethod.GET, path = "/tasks/{id}")
+
+//    METHOD WITHOUT @Transactional annotation must have manual repository.save(task)
+//    code in order for PUT request to work, tasks will be updated even if the exception is thrown, not like
+//    in @Transactional annotation where all the steps must succeed in order for task to be saved
+//    @PutMapping("/tasks/{id}")
+//    ResponseEntity<?> updateTask(@PathVariable int id, @RequestBody @Valid Task toUpdate) {
+//        if (!repository.existsById(id)) {
+//            return ResponseEntity.notFound().build();
+//        }
+//        repository.findById(id)
+//                .ifPresent(task -> {
+//                    task.updateFrom(toUpdate);
+//                    repository.save(task);
+//                });
+//        return ResponseEntity.noContent().build();
+//    }
