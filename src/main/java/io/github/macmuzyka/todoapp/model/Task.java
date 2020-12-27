@@ -1,7 +1,6 @@
 package io.github.macmuzyka.todoapp.model;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
 
 /**
