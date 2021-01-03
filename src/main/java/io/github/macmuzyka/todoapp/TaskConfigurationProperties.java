@@ -16,6 +16,18 @@ public class TaskConfigurationProperties {
     public void setTemplate(Template template) {
         this.template = template;
     }
+
+    public static class Template {
+        private boolean allowMultipleTasks;
+
+        public boolean isAllowMultipleTasks() {
+            return allowMultipleTasks;
+        }
+
+        public void setAllowMultipleTasks(final boolean allowMultipleTasks) {
+            this.allowMultipleTasks = allowMultipleTasks;
+        }
+    }
 }
 
 // @Configuration annotation was required pre Spring Boot 2.2 in order for TaskConfigurationProperties to work properly
