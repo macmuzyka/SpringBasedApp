@@ -18,7 +18,11 @@ public class Task extends BaseTask {
     private TaskGroup group;
 
     public Task() {
+    }
 
+    public Task(String description, LocalDateTime deadline) {
+        super.setDescription(description);
+        this.deadline = deadline;
     }
 
     public LocalDateTime getDeadline() {
