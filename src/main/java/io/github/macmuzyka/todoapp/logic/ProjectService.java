@@ -30,9 +30,9 @@ public class ProjectService {
         return projectRepository.save(projectToSave);
     }
 
-    public GroupReadModel creteGroup(int projectId, LocalDateTime deadline) {
+    public GroupReadModel createGroup(int projectId, LocalDateTime deadline) {
 
-        if (taskGroupRepository.existsByDoneIsFalseAndProject_Id(projectId) && !config.getTemplate().isAllowMultipleTasks()) {
+        if (!config.getTemplate().isAllowMultipleTasks() && taskGroupRepository.existsByDoneIsFalseAndProject_Id(projectId)) {
             throw new IllegalStateException("Only one unfinished Task Group at the time!");
         }
         TaskGroup result = projectRepository.findById(projectId)
@@ -43,8 +43,9 @@ public class ProjectService {
                             .map(projectStep -> new Task(projectStep.getDescription(), deadline.plusDays(projectStep.getDaysToDeadline())))
                             .collect(Collectors.toSet())
                     );
-                    return targetGroup;
-                }).orElseThrow(() -> new IllegalStateException("Project with given id not found"));
+                    targetGroup.setProject(project);
+                    return taskGroupRepository.save(targetGroup);
+                }).orElseThrow(() -> new IllegalArgumentException("Project with given id not found"));
         return new GroupReadModel(result);
 
     }
