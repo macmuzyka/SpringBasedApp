@@ -179,13 +179,3 @@ class ProjectServiceTest {
         }
     }
 }
-
-
-//        assertTrue(mockGroupRepository.existsByDoneIsFalseAndProject_Id(314));
-
-//        assertThatThrownBy(() ->
-//                toTest.creteGroup(0, LocalDateTime.now())).isInstanceOf(IllegalStateException.class);
-//        assertThatExceptionOfType(IllegalStateException.class)
-//                .isThrownBy(() -> toTest.creteGroup(0, LocalDateTime.now()));
-//        assertThatIllegalStateException()
-//                .isThrownBy(() -> toTest.creteGroup(0, LocalDateTime.now()));
