@@ -1,24 +1,22 @@
 package io.github.macmuzyka.todoapp.logic;
 
-import io.github.macmuzyka.todoapp.TaskConfigurationProperties;
 import io.github.macmuzyka.todoapp.model.TaskGroup;
 import io.github.macmuzyka.todoapp.model.TaskGroupRepository;
 import io.github.macmuzyka.todoapp.model.TaskRepository;
 import io.github.macmuzyka.todoapp.model.projection.GroupReadModel;
 import io.github.macmuzyka.todoapp.model.projection.GroupWriteModel;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Service
+//@Service
 public class TaskGroupService {
         private TaskGroupRepository taskGroupRepository;
-        private TaskRepository taskRepository;
+        private TaskRepository repository;
 
     public TaskGroupService(final TaskGroupRepository repository, final TaskRepository taskRepository) {
         this.taskGroupRepository = repository;
-        this.taskRepository = taskRepository;
+        this.repository = taskRepository;
     }
 
     public GroupReadModel createGroup(GroupWriteModel source) {
@@ -33,7 +31,7 @@ public class TaskGroupService {
     }
 
     public void toggleGroup(int groupId) {
-        if (taskRepository.existsByDoneIsFalseAndGroup_Id(groupId)) {
+        if (repository.existsByDoneIsFalseAndGroup_Id(groupId)) {
             throw new IllegalStateException("Group has undone tasks. Do all the tasks first!");
         }
         TaskGroup result = taskGroupRepository.findById(groupId)
