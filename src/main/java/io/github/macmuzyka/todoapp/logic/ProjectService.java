@@ -9,14 +9,14 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Service
+//@Service
 public class ProjectService {
 
     private ProjectRepository projectRepository;
     private TaskGroupRepository taskGroupRepository;
     private TaskConfigurationProperties config;
 
-    public ProjectService(ProjectRepository projectRepository, TaskGroupRepository taskGroupRepository, TaskConfigurationProperties config) {
+    public ProjectService(final ProjectRepository projectRepository, final TaskGroupRepository taskGroupRepository, final TaskConfigurationProperties config) {
         this.projectRepository = projectRepository;
         this.taskGroupRepository = taskGroupRepository;
         this.config = config;
