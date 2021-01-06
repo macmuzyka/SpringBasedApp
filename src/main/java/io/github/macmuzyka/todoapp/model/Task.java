@@ -17,12 +17,21 @@ public class Task extends BaseTask {
     @JoinColumn(name = "task_group_id")
     private TaskGroup group;
 
-    public Task() {
+    Task() {
     }
 
     public Task(String description, LocalDateTime deadline) {
         super.setDescription(description);
         this.deadline = deadline;
+        this.group = null;
+    }
+
+    public Task(String description, LocalDateTime deadline, TaskGroup group) {
+        super.setDescription(description);
+        this.deadline = deadline;
+        if (group != null) {
+            this.group = group;
+        }
     }
 
     public LocalDateTime getDeadline() {
