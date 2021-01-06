@@ -63,7 +63,16 @@ class TestConfiguration {
 
             @Override
             public Task save(Task entity) {
-                return tasks.put(tasks.size() + 1, entity);
+                int key = tasks.size() + 1;
+                try {
+                    var field = Task.class.getSuperclass().getDeclaredField("id");
+                    field.setAccessible(true);
+                    field.set(entity, key);
+                } catch (NoSuchFieldException | IllegalAccessException e) {
+                    throw new RuntimeException(e);
+                }
+                tasks.put(key, entity);
+                return tasks.get(key);
             }
         };
     }
