@@ -21,6 +21,4 @@ public interface TaskRepository {
     List<Task> findByDone(@Param("state") boolean done);
 
     Task save(Task entity);
-
-    void deleteById(Integer id);
 }
