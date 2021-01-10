@@ -15,6 +15,7 @@ import javax.transaction.Transactional;
 import javax.validation.Valid;
 import java.io.IOException;
 import java.net.URI;
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -83,6 +84,14 @@ class TaskController {
     @GetMapping("/{id}")
     ResponseEntity<Task> getTask(@PathVariable int id) {
         return repository.findById(id)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+    }
+
+
+    @GetMapping("/deadline")
+    ResponseEntity<List<Task>> getDeadlineTasks(@RequestParam(defaultValue = "false") boolean done) {
+        return repository.findByDoneAndDeadlineIsBeforeOrDeadlineIsNull(done, LocalDateTime.now())
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
