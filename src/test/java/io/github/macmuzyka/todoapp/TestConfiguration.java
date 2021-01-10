@@ -11,6 +11,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
 import javax.sql.DataSource;
+import java.time.LocalDateTime;
 import java.util.*;
 
 @Configuration
@@ -62,6 +63,11 @@ class TestConfiguration {
             }
 
             @Override
+            public Optional<List<Task>> findAllByGroup_Id(Integer groupId) {
+                return Optional.of(new ArrayList<>(tasks.values()));
+            }
+
+            @Override
             public Task save(Task entity) {
                 int key = tasks.size() + 1;
                 try {
@@ -73,6 +79,11 @@ class TestConfiguration {
                 }
                 tasks.put(key, entity);
                 return tasks.get(key);
+            }
+
+            @Override
+            public Optional<List<Task>> findByDoneAndDeadlineIsBeforeOrDeadlineIsNull(boolean done, LocalDateTime deadline) {
+                return Optional.empty();
             }
         };
     }
