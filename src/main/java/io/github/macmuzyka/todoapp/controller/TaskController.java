@@ -58,6 +58,13 @@ class TaskController {
         );
     }
 
+    @GetMapping(value = "/search/undone")
+    ResponseEntity<List<Task>> readUndoneTasks(@RequestParam(defaultValue = "false") boolean state) {
+        return ResponseEntity.ok(
+                repository.findByDone(state)
+        );
+    }
+
     @Transactional
     @PutMapping("/{id}")
     public ResponseEntity<?> updateTask(@PathVariable int id, @RequestBody @Valid Task toUpdate) {
