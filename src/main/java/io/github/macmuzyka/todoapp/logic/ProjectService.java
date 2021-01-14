@@ -5,6 +5,7 @@ import io.github.macmuzyka.todoapp.model.*;
 import io.github.macmuzyka.todoapp.model.projection.GroupReadModel;
 import io.github.macmuzyka.todoapp.model.projection.GroupTaskWriteModel;
 import io.github.macmuzyka.todoapp.model.projection.GroupWriteModel;
+import io.github.macmuzyka.todoapp.model.projection.ProjectWriteModel;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -34,8 +35,8 @@ public class ProjectService {
         return projectRepository.findAll();
     }
 
-    public Project save(Project projectToSave) {
-        return projectRepository.save(projectToSave);
+    public Project save(ProjectWriteModel projectToSave) {
+        return projectRepository.save(projectToSave.toProject());
     }
 
     public GroupReadModel createGroup(int projectId, LocalDateTime deadline) {
@@ -57,7 +58,7 @@ public class ProjectService {
                                             }
                                     ).collect(Collectors.toSet())
                     );
-                    return taskGroupService.createGroup(targetGroup);
+                    return taskGroupService.createGroup(targetGroup, project);
                 }).orElseThrow(() -> new IllegalArgumentException("Project with given id not found"));
 
     }
