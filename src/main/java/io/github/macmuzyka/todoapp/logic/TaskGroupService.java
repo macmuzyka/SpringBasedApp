@@ -1,5 +1,6 @@
 package io.github.macmuzyka.todoapp.logic;
 
+import io.github.macmuzyka.todoapp.model.Project;
 import io.github.macmuzyka.todoapp.model.TaskGroup;
 import io.github.macmuzyka.todoapp.model.TaskGroupRepository;
 import io.github.macmuzyka.todoapp.model.TaskRepository;
@@ -20,7 +21,11 @@ public class TaskGroupService {
     }
 
     public GroupReadModel createGroup(GroupWriteModel source) {
-        TaskGroup result = taskGroupRepository.save(source.toGroup());
+        return createGroup(source, null);
+    }
+
+    GroupReadModel createGroup(GroupWriteModel source, Project project) {
+        TaskGroup result = taskGroupRepository.save(source.toGroup(project));
         return new GroupReadModel(result);
     }
 
