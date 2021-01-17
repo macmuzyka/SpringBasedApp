@@ -45,7 +45,7 @@ class TaskController {
         return ResponseEntity.ok(repository.findAll(page).getContent());
     }
 
-    @GetMapping("/test")
+    @GetMapping(value = "/test")
     void oldFashionedWay(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         System.out.println(req.getParameter("foo"));
         resp.getWriter().println("test old-fashioned way");
@@ -66,7 +66,7 @@ class TaskController {
     }
 
     @Transactional
-    @PutMapping("/{id}")
+    @PutMapping(value = "/{id}")
     public ResponseEntity<?> updateTask(@PathVariable int id, @RequestBody @Valid Task toUpdate) {
         if (!repository.existsById(id)) {
             return ResponseEntity.notFound().build();
