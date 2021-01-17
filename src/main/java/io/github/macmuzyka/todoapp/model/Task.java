@@ -17,7 +17,7 @@ public class Task extends BaseTask {
     @JoinColumn(name = "task_group_id")
     private TaskGroup group;
 
-    Task() {
+    public Task() {
     }
 
     public Task(String description, LocalDateTime deadline) {
