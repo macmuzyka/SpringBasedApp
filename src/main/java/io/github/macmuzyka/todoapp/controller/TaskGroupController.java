@@ -20,6 +20,7 @@ import java.net.URI;
 import java.util.List;
 
 @Controller
+@IllegalExceptionProcessing
 @RequestMapping("/groups")
 public class TaskGroupController {
 
@@ -28,6 +29,7 @@ public class TaskGroupController {
     private TaskRepository taskRepository;
 
 
+    //TODO: CLOSING GROUP TASK HANDLING
     public TaskGroupController(final TaskGroupService taskGroupService, final TaskRepository taskRepository) {
         this.taskGroupService = taskGroupService;
         this.taskRepository = taskRepository;
@@ -65,16 +67,6 @@ public class TaskGroupController {
         logger.info("Posting new Task Group!");
         GroupReadModel newGroup = taskGroupService.createGroup(toSave);
         return ResponseEntity.created(URI.create("/" + newGroup.getId())).body(newGroup);
-    }
-
-    @ExceptionHandler(IllegalArgumentException.class)
-    ResponseEntity<?> handleIllegalArgument(IllegalArgumentException e) {
-        return ResponseEntity.notFound().build();
-    }
-
-    @ExceptionHandler(IllegalStateException.class)
-    ResponseEntity<String> handleIllegalState(IllegalStateException e) {
-        return ResponseEntity.badRequest().body(e.getMessage());
     }
 
     @GetMapping(produces = MediaType.TEXT_HTML_VALUE)
