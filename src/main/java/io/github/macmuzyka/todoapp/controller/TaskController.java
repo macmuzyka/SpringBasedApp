@@ -5,6 +5,7 @@ import io.github.macmuzyka.todoapp.model.TaskRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -26,10 +27,12 @@ import java.util.List;
 @RequestMapping("/tasks")
 class TaskController {
     private static final Logger logger = LoggerFactory.getLogger(TaskController.class);
+    public final ApplicationEventPublisher eventPublisher;
     private final TaskRepository repository;
 
 
-    TaskController(@Qualifier("sqlTaskRepository") final TaskRepository repository) {
+    TaskController(final ApplicationEventPublisher eventPublisher, @Qualifier("sqlTaskRepository") final TaskRepository repository) {
+        this.eventPublisher = eventPublisher;
         this.repository = repository;
     }
 
@@ -83,7 +86,8 @@ class TaskController {
             return ResponseEntity.notFound().build();
         }
         repository.findById(id)
-                .ifPresent(task -> task.setDone(!task.isDone()));
+                .map(Task::toggle)
+                .ifPresent(eventPublisher::publishEvent);
         return ResponseEntity.noContent().build();
     }
 
