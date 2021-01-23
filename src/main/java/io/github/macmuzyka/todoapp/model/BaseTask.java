@@ -1,5 +1,7 @@
 package io.github.macmuzyka.todoapp.model;
 
+import io.github.macmuzyka.todoapp.model.event.TaskEvent;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 
@@ -38,6 +40,11 @@ public class BaseTask extends Audit {
 
     public void setDone(boolean done) {
         this.done = done;
+    }
+
+    public TaskEvent toggle() {
+        this.done = !this.done;
+        return TaskEvent.changed((Task) this);
     }
 
 
