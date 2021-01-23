@@ -3,6 +3,7 @@ package io.github.macmuzyka.todoapp;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 
 import javax.validation.Validator;
@@ -13,6 +14,7 @@ import javax.validation.Validator;
 // @EnableConfigurationProperties($param) to work / configure properly
 // or annotation mentioned in TaskConfigurationProperties mentioned above @ConfigurationProperties("task") annotation
 
+@EnableAsync
 @SpringBootApplication
 public class TodoAppApplication {
 
