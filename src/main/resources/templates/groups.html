@@ -64,36 +64,35 @@
             </dd>
         </dl>
     </form>
-    <form>
-        <fieldset>
-            <legend>New Task Group</legend>
-            <!--    /*@thymesVar id="groups" type="io.github.macmuzyka.todoapp.model.projection.GroupWriteModel"*/-->
-            <form action="#" method="post" th:action="@{/groups}" th:object="${group}">
-                <p class="C(red)" th:if="${#fields.hasAnyErrors()}" th:errors="*{all}"></p>
-                <label>Group Description
-                    <input type="text" th:field="*{description}" th:errorclass="'Bdc(red)'"/>
+
+    <fieldset>
+        <legend>New Task Group</legend>
+        <!--    /*@thymesVar id="groups" type="io.github.macmuzyka.todoapp.model.projection.GroupWriteModel"*/-->
+        <form action="#" method="post" th:action="@{/groups}" th:object="${group}">
+            <p class="C(red)" th:if="${#fields.hasAnyErrors()}" th:errors="*{all}"></p>
+            <label>Group Description
+                <input type="text" th:field="*{description}" th:errorclass="'Bdc(red)'"/>
+            </label>
+            <fieldset th:each="task,taskStat: *{tasks}">
+                <legend th:text="|Task ${taskStat.index + 1}|"></legend>
+                <label>Task Description
+                    <input type="text" th:field="*{tasks[__${taskStat.index}__].description}"
+                           th:errorclass="'Bdc(red)'"/>
                 </label>
-                <fieldset th:each="task,taskStat: *{tasks}">
-                    <legend th:text="|Task ${taskStat.index + 1}|"></legend>
-                    <label>Task Description
-                        <input type="text" th:field="*{tasks[__${taskStat.index}__].description}"
-                               th:errorclass="'Bdc(red)'"/>
-                    </label>
-                    <label>Deadline
-                        <input type="datetime-local" pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}"
-                               th:field="*{tasks[__${taskStat.index}__].deadline}" th:errorclass="'Bdc(red)'"/>
-                    </label>
-                </fieldset>
-                <div class="P(5px)">
-                    <button type="submit" name="addTask">+</button>
-                </div>
-                <p>
-                    <button type="submit">Add Group</button>
-                    <button type="reset">Clear form</button>
-                </p>
-            </form>
-        </fieldset>
-    </form>
+                <label>Deadline
+                    <input type="datetime-local" pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}"
+                           th:field="*{tasks[__${taskStat.index}__].deadline}" th:errorclass="'Bdc(red)'"/>
+                </label>
+            </fieldset>
+            <div class="P(5px)">
+                <button type="submit" name="addTask">+</button>
+            </div>
+            <p>
+                <button type="submit">Add Group</button>
+                <button type="reset">Clear form</button>
+            </p>
+        </form>
+    </fieldset>
     <p>
         <a href="/projects">Projects</a>
     </p>
