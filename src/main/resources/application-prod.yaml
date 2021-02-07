@@ -3,3 +3,8 @@ spring:
     enabled: false
   datasource:
     url: 'jdbc:h2:mem:todo-db'
+keycloak:
+  auth-server-url: 'http://localhost:8180/auth'
+  realm: 'TodoApp'
+  resource: 'todo-spring-client'
+  public-client: true
